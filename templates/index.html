@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Flask Excel</title>
+</head>
+<body>
+    <h1>Ingrese el nombre del cliente</h1>
+    <form action="{{ url_for('process_name') }}" method="post">
+        <label for="cliente">Cliente:</label>
+        <input type="text" id="cliente" name="cliente" required>
+
+
+        <!-- Nuevo campo para el proyecto -->
+        <label for="proyecto">Proyecto:</label>
+        <input type="text" id="proyecto" name="proyecto" required>
+
+        <!-- Nuevo campo para el contacto -->
+        <label for="contacto">Contacto:</label>
+        <input type="text" id="contacto" name="contacto" required>
+
+        <!-- Nuevo campo para el cargo -->
+        <label for="cargo">Cargo:</label>
+        <input type="text" id="cargo" name="cargo" required>
+
+        <button type="submit">Enviar</button>
+    </form>
+</body>
+</html>

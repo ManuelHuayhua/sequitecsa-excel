@@ -1,0 +1,18 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Cliente</title>
+</head>
+<body>
+    <h1>Detalles del Cliente y Proyecto</h1>
+    <p><strong>Nombre del Cliente:</strong> {{ cliente }}</p>
+    <p><strong>Proyecto:</strong> {{ proyecto }}</p>
+    <p><strong>Contacto:</strong> {{ contacto }}</p>
+    <p><strong>cargo:</strong> {{ cargo }}</p>
+
+    <p><a href="{{ url_for('download_excel', cliente=cliente, proyecto=proyecto, contacto=contacto, cargo=cargo) }}">Descargar Excel</a></p>
+</body>
+</html>
