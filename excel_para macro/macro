@@ -1,0 +1,105 @@
+Sub nuevo2()
+    Dim hojaVentas As Worksheet
+    Dim hojaCobros As Worksheet
+    Dim celdaDestino As Range
+    Dim nombreMarcado As String
+    Dim cliente As String
+    Dim otraInformacion As String
+    Dim moneda As String
+    Dim formaPago As String
+    Dim fechaFactura As Date
+    Dim fila As Long
+    Dim sumaResultante As Double
+    Dim sumaFormaPago As Double
+    
+    ' Cambia "Ventas" y "Cobros" según los nombres reales de tus hojas
+    Set hojaVentas = ThisWorkbook.Sheets("Ventas")
+    Set hojaCobros = ThisWorkbook.Sheets("Cobros")
+    
+    ' Celda de destino en Cobros (5 celdas a la derecha de la celda activa)
+    Set celdaDestino = ActiveCell.Offset(0, 5)
+    
+    ' Nombre marcado en la celda activa
+    nombreMarcado = ActiveCell.Value
+    
+    ' Inicializar las sumas
+    sumaResultante = 0
+    sumaFormaPago = 0
+    
+    ' Recorrer la hoja Ventas y sumar los valores correspondientes al nombre marcado
+    For fila = 2 To hojaVentas.Cells(Rows.Count, 14).End(xlUp).Row ' Columna N (14)
+        If hojaVentas.Cells(fila, 14).Value = nombreMarcado Then
+            ' Obtener la fecha de factura de la columna L (12) en la hoja Ventas
+            fechaFactura = hojaVentas.Cells(fila, 12).Value ' Columna L (12)
+            ' Colocar la fecha de factura a la izquierda de la celda activa en Cobros
+            ActiveCell.Offset(0, -1).Value = fechaFactura
+            
+            ' Obtener el nombre del cliente de la columna B (2) en la hoja Ventas
+            cliente = hojaVentas.Cells(fila, 2).Value ' Columna B (2)
+            ' Colocar el nombre del cliente a la derecha de la celda activa en Cobros
+            ActiveCell.Offset(0, 1).Value = cliente
+            
+            ' Obtener otra información de la columna I (9) en la hoja Ventas
+            otraInformacion = hojaVentas.Cells(fila, 9).Value ' Columna I (9)
+            ' Colocar la otra información a la derecha de la celda activa en Cobros
+            ActiveCell.Offset(0, 2).Value = otraInformacion
+            
+            ' Obtener la información de la columna Q (17) en la hoja Ventas
+            moneda = hojaVentas.Cells(fila, 17).Value ' Columna Q (17)
+            ' Colocar la información de la moneda a la derecha de la celda activa en Cobros
+            ActiveCell.Offset(0, 3).Value = moneda
+            
+            ' Obtener la información de la columna O (15) en la hoja Ventas (Forma de Pago)
+            formaPago = hojaVentas.Cells(fila, 15).Value ' Columna O (15)
+            ' Colocar la información de la forma de pago a la derecha de la celda activa en Cobros
+            ActiveCell.Offset(0, 4).Value = formaPago
+            
+            ' Sumar los valores correspondientes al nombre marcado
+            sumaResultante = sumaResultante + hojaVentas.Cells(fila, 24).Value ' Columna X (24)
+            
+            ' Sumar los valores de la columna O (15) correspondientes al mismo nombre
+            sumaFormaPago = sumaFormaPago + hojaVentas.Cells(fila, 15).Value ' Columna O (15)
+        End If
+    Next fila
+    
+     ' Colocar el resultado de la suma de forma de pago 5 celdas a la derecha de la celda activa en Cobros
+    a = sumaFormaPago + fechaFactura
+    celdaDestino.Value = a
+    
+    Dim fechaActual As Date
+    fechaActual = Date
+    
+    Dim diferenciaEnDias As Integer
+    diferenciaEnDias = DateDiff("d", a, fechaActual)
+    
+    b = fechaActual - a
+    
+    
+    ' Verificar si la celda de 8 celdas a la derecha está vacía
+     If IsEmpty(ActiveCell.Offset(0, 8).Value) Then
+        ' Si está vacía, determinar si la deuda está dentro del plazo
+        If diferenciaEnDias > 0 Then
+            ' La deuda está en plazo
+            ActiveCell.Offset(0, 6).Value = "En plazo"
+            ActiveCell.Offset(0, 7).Value = "Faltan " & diferenciaEnDias & " días"
+        Else
+            ' La deuda está vencida
+            ActiveCell.Offset(0, 6).Value = "Vencida"
+            ActiveCell.Offset(0, 7).Value = "Hace " & Abs(diferenciaEnDias) & " días"
+        End If
+    Else
+        ' Si no está vacía, colocar "Se pagó" en la celda 6 celdas a la derecha
+        ActiveCell.Offset(0, 6).Value = "Se pagó"
+        ActiveCell.Offset(0, 7).Value = "Pagado"
+    End If
+    
+    ' Colocar el resultado de la suma de forma de pago 5 celdas a la derecha de la celda activa en Cobros
+    a = sumaFormaPago + fechaFactura
+    celdaDestino.Value = a
+    
+    
+    ' Colocar el resultado de la suma de valores 12 celdas a la derecha de la celda activa en Cobros
+    celdaDestino.Offset(0, 5).Value = sumaResultante
+    
+
+End Sub
